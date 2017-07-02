@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy homerk, yo</title>
+</head>
+
+<body>
+  <button data-anime="blackButler">Black Butler</button>
+  <button data-anime="gosick">Gosick</button>
+  <button data-anime="toraDora">ToraDora</button>
+  <button data-anime="yuriOnIce">Yuri!!! on Ice</button>
+  <button data-anime="haruhi">The Melancholy of Haruho Suzumiya</button>
+  <button data-anime="soulEater">Soul Eater</button>
+  <button data-anime="hetalia">Hetalia: Axis Powers</button>
+  <button data-anime="cowboyBebop">Cowboy Bebop</button>
+
+  <div id="anime-here">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // Adding on click event listener to all buttons
+    $("button").on("click", function() {
+
+      // Grabbing and storing property value from button
+      var anime = $(this).attr("data-anime");
+
+      // Constructing a queryURL from custom API key
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + anime + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
+
+      // Performing an AJAX request with the queryURL
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+
+        // After data comes back from the request
+        .done(function(response) {
+          console.log(queryURL);
+
+          console.log(response);
+          // storing the data from the AJAX request in the results variable
+          var results = response.data;
+
+          // Looping through each result item
+          for (var i = 0; i < results.length; i++) {
+
+            // Only taking action if the photo has an appropriate rating
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+
+              // Creating a div with the class "item"
+              var animeDiv = $("<div class='item'>");
+
+              // Storing the result item's rating
+              var rating = results[i].rating;
+
+              // Creating a paragraph tag with above item's rating
+              var paragraph = $("<p>").text("Rating: " + rating);
+
+              // giving animeImage src tag
+              var animeImage = $("<img>");
+
+              // Giving image tag an src attribute of a proprty pulled off
+              // result item
+              animeImage.attr("src", results[i].images.fixed_height.url);
+
+              // pushing rating and anime to page
+              animeDiv.append(paragraph);
+              animeDiv.append(animeImage);
+
+              // pushing lower when next button is clicked
+              $("#anime-here").prepend(animeDiv);
+            }
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
