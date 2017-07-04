@@ -3,6 +3,13 @@
 
 
 <head>
+  <!--
+  Add buttons via array in HTML
+  Get those buttons to query Giphy
+  Add gifs to page, along with proper rating
+  Add functionality which starts buttons paused, giving user ability to unpause
+  Add functionailty to add more buttons to array via a submit button
+  -->
   <meta charset="utf-8">
   <title>Giphy homerk, yo</title>
 </head>
@@ -12,7 +19,7 @@
   <button data-anime="gosick">Gosick</button>
   <button data-anime="toraDora">ToraDora</button>
   <button data-anime="yuriOnIce">Yuri!!! on Ice</button>
-  <button data-anime="haruhi">The Melancholy of Haruho Suzumiya</button>
+  <button data-anime="haruhi">The Melancholy of Haruhi Suzumiya</button>
   <button data-anime="soulEater">Soul Eater</button>
   <button data-anime="hetalia">Hetalia: Axis Powers</button>
   <button data-anime="cowboyBebop">Cowboy Bebop</button>
@@ -21,6 +28,9 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
+  var arrAnime = ['blackButler', 'gosick', 'toraDora', 'yuriOnIce', 'haruhi', 'soulEater', 'hetalia', 'cowboyBebop']
+  var arrName = ['Black Butler', 'Gosick', 'ToraDora!', 'Yuri!!! on Ice', 'The Melancholy of Haruhi Suzumiya', 'Soul Eater', 'Hetalia: Axis Powers', 'Cowboy Bebop']
+
     // Adding on click event listener to all buttons
     $("button").on("click", function() {
 
