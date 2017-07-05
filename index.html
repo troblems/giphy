@@ -15,22 +15,70 @@
 </head>
 
 <body>
-  <button data-anime="blackButler">Black Butler</button>
-  <button data-anime="gosick">Gosick</button>
-  <button data-anime="toraDora">ToraDora</button>
-  <button data-anime="yuriOnIce">Yuri!!! on Ice</button>
-  <button data-anime="haruhi">The Melancholy of Haruhi Suzumiya</button>
-  <button data-anime="soulEater">Soul Eater</button>
-  <button data-anime="hetalia">Hetalia: Axis Powers</button>
-  <button data-anime="cowboyBebop">Cowboy Bebop</button>
-
+  <div id="buttonArray">
+  </div>
   <div id="anime-here">
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
-  var arrAnime = ['blackButler', 'gosick', 'toraDora', 'yuriOnIce', 'haruhi', 'soulEater', 'hetalia', 'cowboyBebop']
-  var arrName = ['Black Butler', 'Gosick', 'ToraDora!', 'Yuri!!! on Ice', 'The Melancholy of Haruhi Suzumiya', 'Soul Eater', 'Hetalia: Axis Powers', 'Cowboy Bebop']
+  var arrSearch = ['blackButler', 'gosick', 'toraDora', 'yuriOnIce', 'haruhi', 'soulEater', 'hetalia', 'cowboyBebop'];
+  arrSearch.forEach(function buttonMaker(item, index) {
+    // Creating a button for the current array string
+    var button = document.createElement("button");
+    // Setting the button's name to the current string
+    button.innerHTML = item;
+    // Selecting the tag for the button locaiton
+    var body = document.getElementsByTagName("buttonArray");
+    // Appending the button to the selected location
+    buttonArray.appendChild(button);
+    // Creating an event listener for each button
+    button.addEventListener ("click", function() {
+      // Constructing a queryURL from custom API key
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + item + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
+      // Performing an AJAX request with the queryURL
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        // After data comes back from the request
+        .done(function(response) {
+          console.log(queryURL);
+          console.log(response);
+          // storing the data from the AJAX request in the results variable
+          var results = response.data;
+          // Looping through each result item
+          for (var i = 0; i < results.length; i++) {
+            // Only taking action if the photo has an appropriate rating
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+              // Creating a div with the class "item"
+              var animeDiv = $("<div class='item'>");
+              // Storing the result item's rating
+              var rating = results[i].rating;
+              // Creating a paragraph tag with above item's rating
+              var paragraph = $("<p>").text("Rating: " + rating);
+              // giving animeImage src tag
+              var animeImage = $("<img>");
+              // Giving image tag an src attribute of a proprty pulled off
+              // result item
+              animeImage.attr("src", results[i].images.fixed_height.url);
+              // pushing rating and anime to page
+              animeDiv.append(paragraph);
+              animeDiv.append(animeImage);
+              // pushing lower when next button is clicked
+              $("#anime-here").prepend(animeDiv);
+            };
+          };
+        });
+      });
+    });
 
+/*function buttonMaker (){
+  for (var i = 0; i < arrSearch.length; i++) {
+    var arrSearch[i] = document.createElement("button"[i]);
+    button.innerHTML = arrSearch[i];
+
+  };*/
+/*  //This is being commented out to allow a for loop to handle all the button functions as it creates them
     // Adding on click event listener to all buttons
     $("button").on("click", function() {
 
@@ -85,7 +133,7 @@
             }
           }
         });
-    });
+    });*/
   </script>
 </body>
 
