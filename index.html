@@ -78,20 +78,19 @@
                 // pushing rating and anime to page
                 animeDiv.append(paragraph);
                 animeDiv.append(animeImage);
-                // add listener function to detect if image is clicked on
-                img.addEventListener("click", function() {
+                //this is to pause, I can't get it to work. specifically I don't know what goes in front of .addEventListener
+                //I tried many things. The search function also doesn't work. Everything else does.
+                /*img.addEventListener("click", function() {
                   var state = $(this).attr("data-state");
-                  // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-                  // Then, set the image's data-state to animate
-                  // Else set src to the data-still value
+
                   if (state === "still") {
                     $(this).attr("src", $(this).attr("data-animate"));
                     $(this).attr("data-state", "animate");
                   } else {
                     $(this).attr("src", $(this).attr("data-still"));
-                    $(this).attr("data-state", "still");
-                  }
-                });
+                    $(this).attr("data-state", "still");*/
+
+
                 // pushing lower when next button is clicked
                 $("#anime-here").prepend(animeDiv);
               };
@@ -101,69 +100,6 @@
     });
 
 
-
-    /*function buttonMaker (){
-      for (var i = 0; i < arrSearch.length; i++) {
-        var arrSearch[i] = document.createElement("button"[i]);
-        button.innerHTML = arrSearch[i];
-
-      };*/
-    /*  //This is being commented out to allow a for loop to handle all the button functions as it creates them
-        // Adding on click event listener to all buttons
-        $("button").on("click", function() {
-
-          // Grabbing and storing property value from button
-          var anime = $(this).attr("data-anime");
-
-          // Constructing a queryURL from custom API key
-          var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + anime + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
-
-          // Performing an AJAX request with the queryURL
-          $.ajax({
-              url: queryURL,
-              method: "GET"
-            })
-
-            // After data comes back from the request
-            .done(function(response) {
-              console.log(queryURL);
-
-              console.log(response);
-              // storing the data from the AJAX request in the results variable
-              var results = response.data;
-
-              // Looping through each result item
-              for (var i = 0; i < results.length; i++) {
-
-                // Only taking action if the photo has an appropriate rating
-                if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
-
-                  // Creating a div with the class "item"
-                  var animeDiv = $("<div class='item'>");
-
-                  // Storing the result item's rating
-                  var rating = results[i].rating;
-
-                  // Creating a paragraph tag with above item's rating
-                  var paragraph = $("<p>").text("Rating: " + rating);
-
-                  // giving animeImage src tag
-                  var animeImage = $("<img>");
-
-                  // Giving image tag an src attribute of a proprty pulled off
-                  // result item
-                  animeImage.attr("src", results[i].images.fixed_height.url);
-
-                  // pushing rating and anime to page
-                  animeDiv.append(paragraph);
-                  animeDiv.append(animeImage);
-
-                  // pushing lower when next button is clicked
-                  $("#anime-here").prepend(animeDiv);
-                }
-              }
-            });
-        });*/
   </script>
 </body>
 
