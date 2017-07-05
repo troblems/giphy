@@ -15,125 +15,155 @@
 </head>
 
 <body>
+  <!-- Tag for the array of search terms -->
   <div id="buttonArray">
-  </div>
+  </div> <br>
+  <!-- Button and imput field to add a new search term -->
+  <form>
+    Add an anime:<input type="submit" value="Submit"><br>
+    <input type="text" id="searchterm">
+  </form> <br>
+  <!-- Tag to display gifs at -->
   <div id="anime-here">
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
-  var arrSearch = ['blackButler', 'gosick', 'toraDora', 'yuriOnIce', 'haruhi', 'soulEater', 'hetalia', 'cowboyBebop'];
-  arrSearch.forEach(function buttonMaker(item, index) {
-    // Creating a button for the current array string
-    var button = document.createElement("button");
-    // Setting the button's name to the current string
-    button.innerHTML = item;
-    // Selecting the tag for the button locaiton
-    var body = document.getElementsByTagName("buttonArray");
-    // Appending the button to the selected location
-    buttonArray.appendChild(button);
-    // Creating an event listener for each button
-    button.addEventListener ("click", function() {
-      // Constructing a queryURL from custom API key
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + item + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
-      // Performing an AJAX request with the queryURL
-      $.ajax({
-          url: queryURL,
-          method: "GET"
-        })
-        // After data comes back from the request
-        .done(function(response) {
-          console.log(queryURL);
-          console.log(response);
-          // storing the data from the AJAX request in the results variable
-          var results = response.data;
-          // Looping through each result item
-          for (var i = 0; i < results.length; i++) {
-            // Only taking action if the photo has an appropriate rating
-            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
-              // Creating a div with the class "item"
-              var animeDiv = $("<div class='item'>");
-              // Storing the result item's rating
-              var rating = results[i].rating;
-              // Creating a paragraph tag with above item's rating
-              var paragraph = $("<p>").text("Rating: " + rating);
-              // giving animeImage src tag
-              var animeImage = $("<img>");
-              // Giving image tag an src attribute of a proprty pulled off
-              // result item
-              animeImage.attr("src", results[i].images.fixed_height.url);
-              // pushing rating and anime to page
-              animeDiv.append(paragraph);
-              animeDiv.append(animeImage);
-              // pushing lower when next button is clicked
-              $("#anime-here").prepend(animeDiv);
+    // Default array declared
+    var arrSearch = ['blackButler', 'gosick', 'toraDora', 'yuriOnIce', 'haruhi', 'soulEater', 'hetalia', 'cowboyBebop'];
+    // Function to add a search term.
+    $("submit").on("click", function () {
+      // Pushes the new search term to the end of the array
+      arrSearch.push(document.getElementById("searchterm").value);
+    });
+    // For loop to populate search term buttons and add their functionality
+    arrSearch.forEach(function buttonMaker(item, index) {
+      // Creating a button for the current array string
+      var button = document.createElement("button");
+      // Setting the button's name to the current string
+      button.innerHTML = item;
+      // Selecting the tag for the button locaiton
+      var body = document.getElementsByTagName("buttonArray");
+      // Appending the button to the selected location
+      buttonArray.appendChild(button);
+      // Creating an event listener for each button
+      button.addEventListener("click", function() {
+        // Constructing a queryURL from custom API key
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + item + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
+        // Performing an AJAX request with the queryURL
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+          })
+          // After data comes back from the request
+          .done(function(response) {
+            console.log(queryURL);
+            console.log(response);
+            // storing the data from the AJAX request in the results variable
+            var results = response.data;
+            // Looping through each result item
+            for (var i = 0; i < results.length; i++) {
+              // Only taking action if the photo has an appropriate rating
+              if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+                // Creating a div with the class "item"
+                var animeDiv = $("<div class='item'>");
+                // Storing the result item's rating
+                var rating = results[i].rating;
+                // Creating a paragraph tag with above item's rating
+                var paragraph = $("<p>").text("Rating: " + rating);
+                // giving animeImage src tag
+                var animeImage = $("<img>");
+                // Giving image tag an src attribute of a proprty pulled off
+                // result item
+                animeImage.attr("src", results[i].images.fixed_height.url);
+                // pushing rating and anime to page
+                animeDiv.append(paragraph);
+                animeDiv.append(animeImage);
+                // add listener function to detect if image is clicked on
+                img.addEventListener("click", function() {
+                  var state = $(this).attr("data-state");
+                  // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+                  // Then, set the image's data-state to animate
+                  // Else set src to the data-still value
+                  if (state === "still") {
+                    $(this).attr("src", $(this).attr("data-animate"));
+                    $(this).attr("data-state", "animate");
+                  } else {
+                    $(this).attr("src", $(this).attr("data-still"));
+                    $(this).attr("data-state", "still");
+                  }
+                });
+                // pushing lower when next button is clicked
+                $("#anime-here").prepend(animeDiv);
+              };
             };
-          };
-        });
+          });
       });
     });
 
-/*function buttonMaker (){
-  for (var i = 0; i < arrSearch.length; i++) {
-    var arrSearch[i] = document.createElement("button"[i]);
-    button.innerHTML = arrSearch[i];
 
-  };*/
-/*  //This is being commented out to allow a for loop to handle all the button functions as it creates them
-    // Adding on click event listener to all buttons
-    $("button").on("click", function() {
 
-      // Grabbing and storing property value from button
-      var anime = $(this).attr("data-anime");
+    /*function buttonMaker (){
+      for (var i = 0; i < arrSearch.length; i++) {
+        var arrSearch[i] = document.createElement("button"[i]);
+        button.innerHTML = arrSearch[i];
 
-      // Constructing a queryURL from custom API key
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + anime + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
+      };*/
+    /*  //This is being commented out to allow a for loop to handle all the button functions as it creates them
+        // Adding on click event listener to all buttons
+        $("button").on("click", function() {
 
-      // Performing an AJAX request with the queryURL
-      $.ajax({
-          url: queryURL,
-          method: "GET"
-        })
+          // Grabbing and storing property value from button
+          var anime = $(this).attr("data-anime");
 
-        // After data comes back from the request
-        .done(function(response) {
-          console.log(queryURL);
+          // Constructing a queryURL from custom API key
+          var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + anime + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
 
-          console.log(response);
-          // storing the data from the AJAX request in the results variable
-          var results = response.data;
+          // Performing an AJAX request with the queryURL
+          $.ajax({
+              url: queryURL,
+              method: "GET"
+            })
 
-          // Looping through each result item
-          for (var i = 0; i < results.length; i++) {
+            // After data comes back from the request
+            .done(function(response) {
+              console.log(queryURL);
 
-            // Only taking action if the photo has an appropriate rating
-            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+              console.log(response);
+              // storing the data from the AJAX request in the results variable
+              var results = response.data;
 
-              // Creating a div with the class "item"
-              var animeDiv = $("<div class='item'>");
+              // Looping through each result item
+              for (var i = 0; i < results.length; i++) {
 
-              // Storing the result item's rating
-              var rating = results[i].rating;
+                // Only taking action if the photo has an appropriate rating
+                if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
 
-              // Creating a paragraph tag with above item's rating
-              var paragraph = $("<p>").text("Rating: " + rating);
+                  // Creating a div with the class "item"
+                  var animeDiv = $("<div class='item'>");
 
-              // giving animeImage src tag
-              var animeImage = $("<img>");
+                  // Storing the result item's rating
+                  var rating = results[i].rating;
 
-              // Giving image tag an src attribute of a proprty pulled off
-              // result item
-              animeImage.attr("src", results[i].images.fixed_height.url);
+                  // Creating a paragraph tag with above item's rating
+                  var paragraph = $("<p>").text("Rating: " + rating);
 
-              // pushing rating and anime to page
-              animeDiv.append(paragraph);
-              animeDiv.append(animeImage);
+                  // giving animeImage src tag
+                  var animeImage = $("<img>");
 
-              // pushing lower when next button is clicked
-              $("#anime-here").prepend(animeDiv);
-            }
-          }
-        });
-    });*/
+                  // Giving image tag an src attribute of a proprty pulled off
+                  // result item
+                  animeImage.attr("src", results[i].images.fixed_height.url);
+
+                  // pushing rating and anime to page
+                  animeDiv.append(paragraph);
+                  animeDiv.append(animeImage);
+
+                  // pushing lower when next button is clicked
+                  $("#anime-here").prepend(animeDiv);
+                }
+              }
+            });
+        });*/
   </script>
 </body>
 
