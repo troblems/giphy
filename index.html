@@ -12,95 +12,22 @@
   -->
   <meta charset="utf-8">
   <title>Giphy homerk, yo</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <!-- Tag for the array of search terms -->
-  <div id="buttonArray">
-  </div> <br>
+  <div id="buttonArray"></div>
+
   <!-- Button and imput field to add a new search term -->
-  <form>
-    Add an anime:<input type="submit" value="Submit"><br>
-    <input type="text" id="searchterm">
-  </form> <br>
+  <input type="text" id="search">
+  <button id="submit">Add an anime</button>
+
   <!-- Tag to display gifs at -->
-  <div id="anime-here">
-  </div>
+  <div id="anime"></div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    // Default array declared
-    var arrSearch = ['blackButler', 'gosick', 'toraDora', 'yuriOnIce', 'haruhi', 'soulEater', 'hetalia', 'cowboyBebop'];
-    // Function to add a search term.
-    $("submit").on("click", function () {
-      // Pushes the new search term to the end of the array
-      arrSearch.push(document.getElementById("searchterm").value);
-    });
-    // For loop to populate search term buttons and add their functionality
-    arrSearch.forEach(function buttonMaker(item, index) {
-      // Creating a button for the current array string
-      var button = document.createElement("button");
-      // Setting the button's name to the current string
-      button.innerHTML = item;
-      // Selecting the tag for the button locaiton
-      var body = document.getElementsByTagName("buttonArray");
-      // Appending the button to the selected location
-      buttonArray.appendChild(button);
-      // Creating an event listener for each button
-      button.addEventListener("click", function() {
-        // Constructing a queryURL from custom API key
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + item + "&api_key=1965273f52a241ab8f58649448211435&limit=10";
-        // Performing an AJAX request with the queryURL
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-          })
-          // After data comes back from the request
-          .done(function(response) {
-            console.log(queryURL);
-            console.log(response);
-            // storing the data from the AJAX request in the results variable
-            var results = response.data;
-            // Looping through each result item
-            for (var i = 0; i < results.length; i++) {
-              // Only taking action if the photo has an appropriate rating
-              if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
-                // Creating a div with the class "item"
-                var animeDiv = $("<div class='item'>");
-                // Storing the result item's rating
-                var rating = results[i].rating;
-                // Creating a paragraph tag with above item's rating
-                var paragraph = $("<p>").text("Rating: " + rating);
-                // giving animeImage src tag
-                var animeImage = $("<img>");
-                // Giving image tag an src attribute of a proprty pulled off
-                // result item
-                animeImage.attr("src", results[i].images.fixed_height.url);
-                // pushing rating and anime to page
-                animeDiv.append(paragraph);
-                animeDiv.append(animeImage);
-                //this is to pause, I can't get it to work. specifically I don't know what goes in front of .addEventListener
-                //I tried many things. The search function also doesn't work. Everything else does.
-                /*img.addEventListener("click", function() {
-                  var state = $(this).attr("data-state");
-
-                  if (state === "still") {
-                    $(this).attr("src", $(this).attr("data-animate"));
-                    $(this).attr("data-state", "animate");
-                  } else {
-                    $(this).attr("src", $(this).attr("data-still"));
-                    $(this).attr("data-state", "still");*/
-
-
-                // pushing lower when next button is clicked
-                $("#anime-here").prepend(animeDiv);
-              };
-            };
-          });
-      });
-    });
-
-
-  </script>
+  <script src="app.js"></script>
 </body>
 
 </html>
